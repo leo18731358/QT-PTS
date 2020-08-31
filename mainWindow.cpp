@@ -1,4 +1,5 @@
 #include "mainWindow.h"
+#include "LogHelper.h"
 
 #include <QDateTime>
 
@@ -75,6 +76,8 @@ void mainWindow::ReportMsg()
 	//{
 	//	m_tableView->model()->removeRow(0);
 	//}
+	LogHelper L_I("D:\\Desktop\\");
+	L_I.WriteError("testLog", strMsg);
 
 }
 
