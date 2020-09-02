@@ -13,16 +13,15 @@ private:
 	QString CreateHourFile(QString pathBase);
 
 public:
-	void SetRootFilePath(QString rootFilePath);
-	QString CreateAllTimeFile(QString pathBase);
-	void WriteError(QString strName, QString strError);
-	static LogHelper *Instance();
+	virtual void SetRootFilePath(QString rootFilePath);
+	virtual QString CreateAllTimeFile(QString pathBase);
+	virtual void WriteError(QString strName, QString strError);
 
 private:
 	QMutex mt_Log;
 	QMutex mt_WriteError;
 	QString rootFilePath;
-	
+
 public:
 	static LogHelper *_instance;
 
@@ -30,8 +29,7 @@ public:
 
 extern "C"
 {
-	QMutex mt_outWriteLog;
-	DEALFILE_EXPORT void WriteLogError(QString rootFilePath, QString strName, QString strError);
+	DEALFILE_EXPORT LogHelper *LogInstance();
 }
 
 

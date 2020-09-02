@@ -9,15 +9,6 @@
 #include <iostream>
 
 
-LogHelper *LogHelper::_instance = NULL;
-LogHelper* LogHelper::Instance()
-{
-	if (_instance == NULL)
-	{
-		_instance = new LogHelper();
-	}
-	return _instance;
-}
 
 void LogHelper::SetRootFilePath(QString rootFilePath)
 {
@@ -97,6 +88,7 @@ QString LogHelper::CreateAllTimeFile(QString pathBase)
 
 void  LogHelper::WriteError(QString strName, QString strError)
 {
+	mt_WriteError.lock();
 	try
 	{
 		//获取当前日期
@@ -120,33 +112,13 @@ void  LogHelper::WriteError(QString strName, QString strError)
 	}
 }
 
-
-
-void DEALFILE_EXPORT WriteLogError(QString rootFilePath, QString strName, QString strError)
+LogHelper* LogHelper::_instance = NULL;
+DEALFILE_EXPORT LogHelper *LogInstance()
 {
-	LogHelper *logHelper = LogHelper::Instance();
-	logHelper->SetRootFilePath(rootFilePath);
-
-	mt_outWriteLog.lock();
-	try
+	if (LogHelper::_instance == NULL)
 	{
-		//获取当前日期
-		QDateTime dt = QDateTime::currentDateTime();
-		QString strPath = logHelper->CreateAllTimeFile(rootFilePath);
-		//文件
-		QString strFileLog = strPath + "\\" + strName + ".log";	
-		QFile file;
-		QTextStream textStream;
-		file.setFileName(strFileLog);
-		file.open(QIODevice::WriteOnly | QIODevice::Append);
-		textStream.setDevice(&file);
-		textStream << dt.toString("yyyy-MM-dd hh:mm:ss:zzz") << "  " << strError << endl;
-		file.close();
-		mt_outWriteLog.unlock();
+		LogHelper::_instance = new LogHelper();
 	}
-	catch (const std::exception & ex)
-	{
-		mt_outWriteLog.unlock();
-		return;
-	}
+	return LogHelper::_instance;
 }
+

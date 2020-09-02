@@ -8,9 +8,13 @@ class DEALFILE_EXPORT IniHelper
 {
 
 public:
-	static IniHelper *Instance();
+	virtual void WriteIni(QString section, QString key, QString value, QString filePath);
+	virtual QString ReadIniStr(QString section, QString key, QString filePath);
+	virtual double ReadIniDouble(QString section, QString key, QString filePath);
+	virtual int ReadIniInt(QString section, QString key, QString filePath);
 
-private:
+
+public:
 	static IniHelper *_instance;
 
 
@@ -18,10 +22,9 @@ private:
 
 extern "C"
 {
-	DEALFILE_EXPORT void WriteIni(QString section, QString key, QString value, QString filePath);
-	DEALFILE_EXPORT std::string ReadIniStr(QString section, QString key,QString filePath);
-	DEALFILE_EXPORT double ReadIniDouble(QString section, QString key, QString filePath);
-	DEALFILE_EXPORT int ReadIniInt(QString section, QString key, QString filePath);
+
+
+	DEALFILE_EXPORT IniHelper *IniInstance();
 }
 
 

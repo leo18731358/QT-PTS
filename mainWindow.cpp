@@ -1,8 +1,13 @@
 #include "mainWindow.h"
 
+#include "DealFile\LogHelper.h"
+#include "DealFile\IniHelper.h"
+
 #include <QDateTime>
 #include <QLibrary>
 #include <QDebug>
+
+
 
 mainWindow::mainWindow(QWidget *parent)
 	: QWidget(parent)
@@ -80,22 +85,30 @@ void mainWindow::ReportMsg()
 
 
 
-	typedef void (*WriteLogFun)(QString, QString, QString);
-	QLibrary *writeLogFun = new QLibrary("DealFile.dll");
-	if (writeLogFun->load())
+	typedef LogHelper* (*LogHelperFun)();
+	QLibrary *DealFileDll = new QLibrary("DealFile.dll");
+	if (DealFileDll->load())
 	{
-		WriteLogFun writeLog = (WriteLogFun)writeLogFun->resolve("WriteLogError");
-		if (writeLog)
+		LogHelperFun logHelperFun = (LogHelperFun)DealFileDll->resolve("LogInstance");
+		if (logHelperFun)
 		{
-			writeLog("D:\\Desktop\\","testLog", strMsg);
+			LogHelper* logHelper = logHelperFun();
+			logHelper->SetRootFilePath("D:\\Desktop\\");
+			logHelper->WriteError("test111", strMsg);
 		}
 	}
 
-	typedef std::string(*ReadIniStrFun)(QString, QString, QString);
-	ReadIniStrFun ReadIniStr = (ReadIniStrFun)writeLogFun->resolve("ReadIniStr");
-	std::string ss = ReadIniStr("section", "key", "D:\\Desktop\\1.ini");
-	QString sss = QString::fromStdString(ss);
-	qDebug() << sss << endl;
+	typedef IniHelper* (*IniHelperFun)();
+	IniHelperFun iniHelperFun = (IniHelperFun)DealFileDll->resolve("IniInstance");
+	if (iniHelperFun)
+	{
+		IniHelper *iniHelper = iniHelperFun();
+		iniHelper->WriteIni("section", "key", "12345", "D:\\Desktop\\1.ini");
+
+		QString ss = iniHelper->ReadIniStr("section", "key", "D:\\Desktop\\1.ini");
+		qDebug() << ss << endl;
+
+	}
 
 
 }
