@@ -1,7 +1,8 @@
 #include "mainWindow.h"
-#include "LogHelper.h"
 
 #include <QDateTime>
+#include <QLibrary>
+#include <QDebug>
 
 mainWindow::mainWindow(QWidget *parent)
 	: QWidget(parent)
@@ -76,8 +77,21 @@ void mainWindow::ReportMsg()
 	//{
 	//	m_tableView->model()->removeRow(0);
 	//}
-	LogHelper L_I("D:\\Desktop\\");
-	L_I.WriteError("testLog", strMsg);
+
+
+
+	typedef void (*WriteLogFun)(QString, QString, QString);
+	QLibrary *writeLogFun = new QLibrary("DealFile.dll");
+	if (writeLogFun->load())
+	{
+		WriteLogFun writeLog = (WriteLogFun)writeLogFun->resolve("WriteLogError");
+		if (writeLog)
+		{
+			writeLog("D:\\Desktop\\","testLog", strMsg);
+		}
+	}
+
+
 
 }
 

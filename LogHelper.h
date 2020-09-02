@@ -19,7 +19,6 @@ private:
 	QString CreateHourFile(QString pathBase);
 public:
 	void WriteError(QString strName, QString strError);
-
 private:
 	QMutex mt_Log;
 	QMutex mt_WriteError;
