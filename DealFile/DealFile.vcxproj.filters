@@ -26,9 +26,15 @@
     <ClInclude Include="LogHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IniHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LogHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IniHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

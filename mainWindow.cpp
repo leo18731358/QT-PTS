@@ -91,6 +91,11 @@ void mainWindow::ReportMsg()
 		}
 	}
 
+	typedef std::string(*ReadIniStrFun)(QString, QString, QString);
+	ReadIniStrFun ReadIniStr = (ReadIniStrFun)writeLogFun->resolve("ReadIniStr");
+	std::string ss = ReadIniStr("section", "key", "D:\\Desktop\\1.ini");
+	QString sss = QString::fromStdString(ss);
+	qDebug() << sss << endl;
 
 
 }
