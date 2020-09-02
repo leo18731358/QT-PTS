@@ -6,6 +6,8 @@
 #include <QFile>
 #include <QTextStream>
 #include <QDebug>
+#include <iostream>
+
 
 LogHelper::LogHelper(QObject *parent)
 	: QObject(parent)
@@ -46,8 +48,9 @@ QString LogHelper::CreateDayFile(QString pathBase)
 		mt_Log.unlock();
 		return path;
 	}
-	catch (const std::exception &)
+	catch (const std::exception &ex)
 	{
+		WriteError("LogWrite", ex.what());
 		mt_Log.unlock();
 		return "";
 	}
@@ -76,8 +79,9 @@ QString LogHelper::CreateHourFile(QString pathBase)
 		mt_Log.unlock();
 		return path;
 	}
-	catch (const std::exception &)
+	catch (const std::exception &ex)
 	{
+		WriteError("LogWrite", ex.what());
 		mt_Log.unlock();
 		return "";
 	}
@@ -110,7 +114,7 @@ void LogHelper::WriteError(QString strName, QString strError)
 		file.close();
 		mt_WriteError.unlock();
 	}
-	catch (const std::exception&)
+	catch (const std::exception & ex)
 	{
 		mt_WriteError.unlock();
 		return;
