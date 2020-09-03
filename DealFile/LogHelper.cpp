@@ -10,7 +10,7 @@
 
 
 
-void LogHelper::SetRootFilePath(QString rootFilePath)
+LogHelper::LogHelper(QString rootFilePath)
 {
 	this->rootFilePath = rootFilePath;
 }
@@ -113,11 +113,11 @@ void  LogHelper::WriteError(QString strName, QString strError)
 }
 
 LogHelper* LogHelper::_instance = NULL;
-DEALFILE_EXPORT LogHelper *LogInstance()
+DEALFILE_EXPORT LogHelper *LogInstance(QString rootFilePath)
 {
 	if (LogHelper::_instance == NULL)
 	{
-		LogHelper::_instance = new LogHelper();
+		LogHelper::_instance = new LogHelper(rootFilePath);
 	}
 	return LogHelper::_instance;
 }

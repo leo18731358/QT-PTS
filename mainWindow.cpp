@@ -84,16 +84,14 @@ void mainWindow::ReportMsg()
 	//}
 
 
-
-	typedef LogHelper* (*LogHelperFun)();
+	typedef LogHelper* (*LogHelperFun)(QString);
 	QLibrary *DealFileDll = new QLibrary("DealFile.dll");
 	if (DealFileDll->load())
 	{
 		LogHelperFun logHelperFun = (LogHelperFun)DealFileDll->resolve("LogInstance");
 		if (logHelperFun)
 		{
-			LogHelper* logHelper = logHelperFun();
-			logHelper->SetRootFilePath("D:\\Desktop\\");
+			LogHelper* logHelper = logHelperFun("D:\\Desktop\\");
 			logHelper->WriteError("test111", strMsg);
 		}
 	}

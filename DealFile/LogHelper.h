@@ -13,7 +13,7 @@ private:
 	QString CreateHourFile(QString pathBase);
 
 public:
-	virtual void SetRootFilePath(QString rootFilePath);
+	LogHelper(QString rootFilePath);
 	virtual QString CreateAllTimeFile(QString pathBase);
 	virtual void WriteError(QString strName, QString strError);
 
@@ -29,7 +29,7 @@ public:
 
 extern "C"
 {
-	DEALFILE_EXPORT LogHelper *LogInstance();
+	DEALFILE_EXPORT LogHelper *LogInstance(QString rootFilePath);
 }
 
 
